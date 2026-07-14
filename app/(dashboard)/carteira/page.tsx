@@ -2,6 +2,7 @@ import { listarCarteira } from "@/lib/queries";
 import { formatData } from "@/lib/utils";
 import { StatusClienteBadge } from "@/components/dominio-badges";
 import { Badge } from "@/components/ui/badge";
+import { AcoesContato } from "@/components/carteira/acoes-contato";
 import { AlertTriangle } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -23,7 +24,7 @@ export default async function CarteiraPage() {
         <p className="text-sm text-muted-foreground">Nenhum cliente cadastrado.</p>
       ) : (
         <div className="overflow-x-auto rounded-lg border border-border">
-          <table className="w-full min-w-[720px] text-sm">
+          <table className="w-full min-w-[860px] text-sm">
             <thead className="bg-muted/50 text-left text-xs uppercase text-muted-foreground">
               <tr>
                 <th className="px-4 py-3 font-medium">Cliente</th>
@@ -32,6 +33,7 @@ export default async function CarteiraPage() {
                 <th className="px-4 py-3 font-medium">Último contato</th>
                 <th className="px-4 py-3 font-medium">Cadência</th>
                 <th className="px-4 py-3 font-medium">Próximo toque</th>
+                <th className="px-4 py-3 font-medium">Ações</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
@@ -64,6 +66,9 @@ export default async function CarteiraPage() {
                     ) : (
                       <Badge tom="verde">em dia</Badge>
                     )}
+                  </td>
+                  <td className="px-4 py-3">
+                    <AcoesContato clienteId={c.id} nome={c.nome} optOut={c.optOut} />
                   </td>
                 </tr>
               ))}
