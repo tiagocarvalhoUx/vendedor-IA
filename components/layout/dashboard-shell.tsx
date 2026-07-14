@@ -62,8 +62,8 @@ function Marca() {
     <Image
       src={logoVia}
       alt="VIA — AI Sales Automation"
-      width={80}
-      height={80}
+      width={120}
+      height={120}
       priority
       className="shrink-0"
     />
