@@ -17,7 +17,7 @@ import { NAV, type ItemNav } from "@/components/layout/nav";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { NotificacoesBell } from "@/components/notificacoes/notificacoes-bell";
 import { cn } from "@/lib/utils";
-import logoVia from "@/components/logo/logo-VA.png";
+import logoVia from "@/components/logo/logo-IA.png";
 
 const OPERADOR = "Marcio";
 
@@ -62,10 +62,10 @@ function Marca() {
     <Image
       src={logoVia}
       alt="VIA — AI Sales Automation"
-      width={120}
-      height={120}
+      width={140}
+      height={118}
       priority
-      className="shrink-0"
+      className="h-auto w-[140px] shrink-0"
     />
   );
 }
