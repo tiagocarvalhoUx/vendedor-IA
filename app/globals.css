@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Tema Unno Ambiental — SaaS moderno em índigo/violeta sobre fundo lavanda.
+  Cards brancos flutuantes, cantos generosos, sombras suaves. Suporte dark/light.
+*/
+@layer base {
+  :root {
+    --background: 244 46% 97%;   /* lavanda muito clara */
+    --foreground: 240 18% 20%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 18% 20%;
+
+    /* Índigo/violeta — marca */
+    --primary: 250 70% 63%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 250 60% 96%;
+    --secondary-foreground: 250 35% 42%;
+
+    --muted: 244 30% 95%;
+    --muted-foreground: 240 8% 48%;
+
+    --accent: 265 72% 63%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 74% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 152 56% 42%;
+    --success-foreground: 0 0% 100%;
+
+    --border: 244 32% 91%;
+    --input: 244 32% 91%;
+    --ring: 250 70% 63%;
+
+    --radius: 1rem;
+  }
+
+  .dark {
+    --background: 245 28% 9%;
+    --foreground: 240 15% 92%;
+
+    --card: 245 24% 13%;
+    --card-foreground: 240 15% 92%;
+
+    --primary: 250 78% 70%;
+    --primary-foreground: 245 40% 8%;
+
+    --secondary: 245 20% 19%;
+    --secondary-foreground: 240 15% 92%;
+
+    --muted: 245 18% 17%;
+    --muted-foreground: 240 10% 62%;
+
+    --accent: 265 72% 70%;
+    --accent-foreground: 245 40% 8%;
+
+    --destructive: 0 66% 56%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 152 52% 50%;
+    --success-foreground: 245 40% 8%;
+
+    --border: 245 18% 22%;
+    --input: 245 18% 22%;
+    --ring: 250 78% 70%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Rolagem discreta para áreas densas (kanban, tabelas). */
+@layer utilities {
+  .scrollbar-suave {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) transparent;
+  }
+}
