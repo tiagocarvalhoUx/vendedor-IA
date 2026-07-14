@@ -275,6 +275,50 @@ begin
   end loop;
 end $$;
 
+-- ─────────────── Notificações (venda finalizada) ───────────────
+-- Criado APÓS o seed para não gerar notificação dos pedidos de exemplo.
+create table if not exists notificacoes (
+  id         uuid primary key default gen_random_uuid(),
+  tipo       text not null default 'venda_finalizada',
+  titulo     text not null,
+  mensagem   text not null,
+  pedido_id  uuid references pedidos (id) on delete set null,
+  valor      numeric(12,2),
+  lida       boolean not null default false,
+  created_at timestamptz not null default now()
+);
+create index if not exists idx_notificacoes_nao_lidas on notificacoes (lida, created_at desc);
+alter table notificacoes enable row level security;
+do $$
+begin
+  if not exists (select 1 from pg_policies where schemaname='public' and tablename='notificacoes' and policyname='notificacoes_sel') then
+    create policy notificacoes_sel on notificacoes for select to authenticated using (true);
+    create policy notificacoes_ins on notificacoes for insert to authenticated with check (true);
+    create policy notificacoes_upd on notificacoes for update to authenticated using (true) with check (true);
+    create policy notificacoes_del on notificacoes for delete to authenticated using (true);
+  end if;
+end $$;
+
+create or replace function notificar_venda_finalizada()
+returns trigger language plpgsql
+set search_path = public, pg_temp as $$
+declare v_vendedor text; v_cliente text;
+begin
+  if new.status = 'faturado' and (tg_op = 'INSERT' or old.status is distinct from 'faturado') then
+    select nome into v_vendedor from vendedores_ia where id = new.vendedor_ia_id;
+    select nome into v_cliente  from clientes      where id = new.cliente_id;
+    insert into notificacoes (tipo, titulo, mensagem, pedido_id, valor)
+    values ('venda_finalizada','Venda finalizada 🎉',
+      coalesce(v_vendedor,'Agente') || ' fechou ' || coalesce(new.mercos_pedido_id,'um pedido') || ' para ' || coalesce(v_cliente,'cliente'),
+      new.id, new.valor_total);
+  end if;
+  return new;
+end; $$;
+
+drop trigger if exists trg_notificar_venda on pedidos;
+create trigger trg_notificar_venda after insert or update of status on pedidos
+  for each row execute function notificar_venda_finalizada();
+
 -- Confirmação
 select
   (select count(*) from vendedores_ia)    as vendedores,

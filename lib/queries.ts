@@ -248,6 +248,68 @@ export async function atividadeRecente(): Promise<EventoAtividade[]> {
     .slice(0, 5);
 }
 
+// ─────────────────────────── Notificações ───────────────────────────
+
+export interface NotificacaoView {
+  readonly id: string;
+  readonly titulo: string;
+  readonly mensagem: string;
+  readonly valor: number | null;
+  readonly lida: boolean;
+  readonly criadoEm: string;
+}
+
+interface RawNotificacao {
+  id: string;
+  titulo: string;
+  mensagem: string;
+  valor: number | null;
+  lida: boolean;
+  created_at: string;
+}
+
+/** Últimas notificações + total de não lidas (para o sino). SERVER-ONLY. */
+export async function listarNotificacoes(
+  limite = 20,
+): Promise<{ itens: NotificacaoView[]; naoLidas: number }> {
+  const supabase = criarClienteServico();
+
+  const [lista, contagem] = await Promise.all([
+    supabase
+      .from("notificacoes")
+      .select("id, titulo, mensagem, valor, lida, created_at")
+      .order("created_at", { ascending: false })
+      .limit(limite),
+    supabase
+      .from("notificacoes")
+      .select("*", { count: "exact", head: true })
+      .eq("lida", false),
+  ]);
+
+  if (lista.error) throw new Error(`Notificações: ${lista.error.message}`);
+
+  const itens = ((lista.data ?? []) as RawNotificacao[]).map((n) => ({
+    id: n.id,
+    titulo: n.titulo,
+    mensagem: n.mensagem,
+    valor: n.valor === null ? null : Number(n.valor),
+    lida: n.lida,
+    criadoEm: n.created_at,
+  }));
+
+  return { itens, naoLidas: contagem.count ?? 0 };
+}
+
+/** Marca todas as notificações como lidas. SERVER-ONLY. */
+export async function marcarNotificacoesLidas(): Promise<void> {
+  const supabase = criarClienteServico();
+  const { error } = await supabase
+    .from("notificacoes")
+    .update({ lida: true })
+    .eq("lida", false);
+  if (error) throw new Error(`Marcar lidas: ${error.message}`);
+}
+
 // ─────────────────────────── Carteira ───────────────────────────
 
 export interface LinhaCarteira {

@@ -1,18 +1,11 @@
 import { DashboardShell } from "@/components/layout/dashboard-shell";
-import { obterResumoOverview } from "@/lib/queries";
 
-export const dynamic = "force-dynamic";
-
-// Shell do painel (mobile-first). Alimenta o sino com escalonamentos abertos.
-export default async function DashboardLayout({
+// Shell do painel (mobile-first). O sino de notificações se alimenta sozinho
+// via /api/notificacoes (polling), então o layout não precisa buscar dados.
+export default function DashboardLayout({
   children,
 }: {
   readonly children: React.ReactNode;
 }) {
-  const { escalonamentosAbertos } = await obterResumoOverview();
-  return (
-    <DashboardShell escalonamentosAbertos={escalonamentosAbertos}>
-      {children}
-    </DashboardShell>
-  );
+  return <DashboardShell>{children}</DashboardShell>;
 }

@@ -8,7 +8,6 @@ import {
   Menu,
   X,
   Search,
-  Bell,
   Calendar,
   ChevronDown,
   ArrowRight,
@@ -16,6 +15,7 @@ import {
 } from "lucide-react";
 import { NAV, type ItemNav } from "@/components/layout/nav";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { NotificacoesBell } from "@/components/notificacoes/notificacoes-bell";
 import { cn } from "@/lib/utils";
 import logoVia from "@/components/logo/logo-VA.png";
 
@@ -140,10 +140,8 @@ function ConteudoSidebar({
  */
 export function DashboardShell({
   children,
-  escalonamentosAbertos = 0,
 }: {
   readonly children: React.ReactNode;
-  readonly escalonamentosAbertos?: number;
 }) {
   const pathname = usePathname();
   const [aberto, setAberto] = useState(false);
@@ -236,19 +234,8 @@ export function DashboardShell({
             />
           </div>
 
-          {/* Notificações */}
-          <button
-            type="button"
-            aria-label={`Notificações: ${escalonamentosAbertos} escalonamento(s) aberto(s)`}
-            className="relative inline-flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
-          >
-            <Bell className="h-[18px] w-[18px]" strokeWidth={1.75} aria-hidden />
-            {escalonamentosAbertos > 0 && (
-              <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold text-destructive-foreground">
-                {escalonamentosAbertos}
-              </span>
-            )}
-          </button>
+          {/* Notificações (sino ao vivo: vendas finalizadas) */}
+          <NotificacoesBell />
 
           <ThemeToggle />
 
