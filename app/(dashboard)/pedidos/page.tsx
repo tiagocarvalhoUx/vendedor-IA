@@ -16,9 +16,11 @@ export default async function PedidosPage() {
         </p>
       </div>
 
-      {/* Kanban horizontal: uma coluna por etapa do ciclo. */}
-      <div className="overflow-x-auto pb-2">
-        <div className="flex min-w-max gap-4">
+      {/* Kanban horizontal: uma coluna por etapa. As colunas se ajustam à
+          altura do próprio conteúdo (items-start); colunas cheias rolam por
+          dentro (max-h + overflow) em vez de esticar a página. */}
+      <div className="overflow-x-auto pb-2 scrollbar-suave">
+        <div className="flex min-w-max items-start gap-4">
           {PIPELINE.map((col) => {
             const cartoes = pedidos.filter((p) => p.status === col.status);
             const total = cartoes.reduce((s, c) => s + c.valorTotal, 0);
@@ -26,15 +28,15 @@ export default async function PedidosPage() {
               <section
                 key={col.status}
                 aria-label={col.rotulo}
-                className="flex w-64 shrink-0 flex-col rounded-lg border border-border bg-muted/30"
+                className="flex w-72 shrink-0 flex-col rounded-2xl border border-border bg-muted/30"
               >
-                <header className="flex items-center justify-between border-b border-border px-3 py-2">
+                <header className="flex items-center justify-between border-b border-border px-3 py-2.5">
                   <span className="text-sm font-medium">{col.rotulo}</span>
                   <span className="rounded-full bg-background px-2 py-0.5 text-xs tabular-nums text-muted-foreground">
                     {cartoes.length}
                   </span>
                 </header>
-                <div className="flex-1 space-y-2 p-2">
+                <div className="max-h-[calc(100dvh-16rem)] space-y-2 overflow-y-auto p-2 scrollbar-suave">
                   {cartoes.length === 0 ? (
                     <p className="px-1 py-4 text-center text-xs text-muted-foreground">
                       vazio
