@@ -25,6 +25,11 @@ const serverSchema = z.object({
   MERCOS_COMPANY_TOKEN: z.string().min(1).optional(),
   OMIE_APP_KEY: z.string().min(1).optional(),
   OMIE_APP_SECRET: z.string().min(1).optional(),
+  // Twilio — voz + WhatsApp. SERVER-ONLY.
+  TWILIO_ACCOUNT_SID: z.string().min(1).optional(),
+  TWILIO_AUTH_TOKEN: z.string().min(1).optional(),
+  TWILIO_VOICE_NUMBER: z.string().min(1).optional(), // ex.: +5511999998888
+  TWILIO_WHATSAPP_NUMBER: z.string().min(1).optional(), // ex.: +14155238886 (sandbox) ou BR
   // Token de verificação do webhook do WhatsApp Cloud API (handshake GET).
   WHATSAPP_VERIFY_TOKEN: z.string().min(1).optional(),
   // Limiar de similaridade do RAG (0..1). Abaixo disso → "não sei" + escalonar.
@@ -49,6 +54,10 @@ export const serverEnv = serverSchema.parse({
   MERCOS_COMPANY_TOKEN: vazioParaUndefined(process.env.MERCOS_COMPANY_TOKEN),
   OMIE_APP_KEY: vazioParaUndefined(process.env.OMIE_APP_KEY),
   OMIE_APP_SECRET: vazioParaUndefined(process.env.OMIE_APP_SECRET),
+  TWILIO_ACCOUNT_SID: vazioParaUndefined(process.env.TWILIO_ACCOUNT_SID),
+  TWILIO_AUTH_TOKEN: vazioParaUndefined(process.env.TWILIO_AUTH_TOKEN),
+  TWILIO_VOICE_NUMBER: vazioParaUndefined(process.env.TWILIO_VOICE_NUMBER),
+  TWILIO_WHATSAPP_NUMBER: vazioParaUndefined(process.env.TWILIO_WHATSAPP_NUMBER),
   WHATSAPP_VERIFY_TOKEN: vazioParaUndefined(process.env.WHATSAPP_VERIFY_TOKEN),
   RAG_SCORE_THRESHOLD: vazioParaUndefined(process.env.RAG_SCORE_THRESHOLD),
 });
