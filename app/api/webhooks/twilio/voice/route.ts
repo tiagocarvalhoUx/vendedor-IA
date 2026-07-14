@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import twilio from "twilio";
 import { serverEnv } from "@/lib/env";
 import { validarAssinaturaTwilio, baseUrlPublica } from "@/lib/twilio";
+import { elevenLabsConfigurado } from "@/lib/elevenlabs";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -26,14 +27,21 @@ export async function POST(req: Request): Promise<NextResponse> {
     }
   }
 
+  const saudacao =
+    "Olá! Aqui é o assistente virtual da Unno Ambiental. " +
+    "Esta é uma ligação de demonstração do nosso atendimento por inteligência artificial. " +
+    "Em breve poderei tirar suas dúvidas sobre produtos e pedidos. Obrigado e até logo!";
+
   const VoiceResponse = twilio.twiml.VoiceResponse;
   const vr = new VoiceResponse();
-  vr.say(
-    { voice: "Polly.Camila-Neural", language: "pt-BR" },
-    "Olá! Aqui é o assistente virtual da Unno Ambiental. " +
-      "Esta é uma ligação de demonstração do nosso atendimento por inteligência artificial. " +
-      "Em breve poderei tirar suas dúvidas sobre produtos e pedidos. Obrigado e até logo!",
-  );
+
+  if (elevenLabsConfigurado()) {
+    // Voz realista ElevenLabs (áudio servido por /api/tts).
+    vr.play(`${baseUrlPublica()}/api/tts?texto=${encodeURIComponent(saudacao)}`);
+  } else {
+    // Fallback: voz Polly do Twilio (quando o ElevenLabs não está configurado).
+    vr.say({ voice: "Polly.Camila-Neural", language: "pt-BR" }, saudacao);
+  }
 
   return new NextResponse(vr.toString(), {
     status: 200,

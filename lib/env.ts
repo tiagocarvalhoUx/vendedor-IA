@@ -30,6 +30,10 @@ const serverSchema = z.object({
   TWILIO_AUTH_TOKEN: z.string().min(1).optional(),
   TWILIO_VOICE_NUMBER: z.string().min(1).optional(), // ex.: +5511999998888
   TWILIO_WHATSAPP_NUMBER: z.string().min(1).optional(), // ex.: +14155238886 (sandbox) ou BR
+  // ElevenLabs — voz realista (TTS). SERVER-ONLY.
+  ELEVENLABS_API_KEY: z.string().min(1).optional(),
+  ELEVENLABS_VOICE_ID: z.string().min(1).optional(),
+  ELEVENLABS_MODEL_ID: z.string().min(1).optional(),
   // Token de verificação do webhook do WhatsApp Cloud API (handshake GET).
   WHATSAPP_VERIFY_TOKEN: z.string().min(1).optional(),
   // Limiar de similaridade do RAG (0..1). Abaixo disso → "não sei" + escalonar.
@@ -58,6 +62,9 @@ export const serverEnv = serverSchema.parse({
   TWILIO_AUTH_TOKEN: vazioParaUndefined(process.env.TWILIO_AUTH_TOKEN),
   TWILIO_VOICE_NUMBER: vazioParaUndefined(process.env.TWILIO_VOICE_NUMBER),
   TWILIO_WHATSAPP_NUMBER: vazioParaUndefined(process.env.TWILIO_WHATSAPP_NUMBER),
+  ELEVENLABS_API_KEY: vazioParaUndefined(process.env.ELEVENLABS_API_KEY),
+  ELEVENLABS_VOICE_ID: vazioParaUndefined(process.env.ELEVENLABS_VOICE_ID),
+  ELEVENLABS_MODEL_ID: vazioParaUndefined(process.env.ELEVENLABS_MODEL_ID),
   WHATSAPP_VERIFY_TOKEN: vazioParaUndefined(process.env.WHATSAPP_VERIFY_TOKEN),
   RAG_SCORE_THRESHOLD: vazioParaUndefined(process.env.RAG_SCORE_THRESHOLD),
 });
