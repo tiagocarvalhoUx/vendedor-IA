@@ -116,7 +116,7 @@ function ConteudoSidebar({
 }) {
   return (
     <>
-      <div className="px-4 pt-5">
+      <div className="flex justify-center px-4 pt-5">
         <Marca />
       </div>
       <nav aria-label="Navegação principal" className="mt-6 flex-1 space-y-1 overflow-y-auto px-3 scrollbar-suave">
