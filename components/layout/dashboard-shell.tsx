@@ -16,6 +16,7 @@ import {
 import { NAV, type ItemNav } from "@/components/layout/nav";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { NotificacoesBell } from "@/components/notificacoes/notificacoes-bell";
+import { Rodape } from "@/components/layout/rodape";
 import { cn } from "@/lib/utils";
 import logoVia from "@/components/logo/logo-IA.png";
 
@@ -245,7 +246,10 @@ export function DashboardShell({
           </span>
         </header>
 
-        <main className="flex-1 px-4 pb-8 pt-2 sm:px-6">{children}</main>
+        <main className="min-w-0 flex-1 px-4 pb-8 pt-2 sm:px-6">
+          {children}
+          <Rodape />
+        </main>
       </div>
     </div>
   );

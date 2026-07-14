@@ -2,7 +2,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Sparkles } from "lucide-react";
 import logoIA from "@/components/logo/logo-IA.png";
-import ic1 from "@/components/icons/icon-IA-1.png";
 import ic2 from "@/components/icons/icon-IA-2.png";
 import ic3 from "@/components/icons/icon-IA-3.png";
 import ic4 from "@/components/icons/icon-IA-4.png";
@@ -13,7 +12,6 @@ import ic8 from "@/components/icons/icon-IA-8.png";
 
 // Landing pública (home). Ponto de entrada com marca; CTA leva ao painel.
 const RECURSOS = [
-  { src: ic1, nome: "Inteligência Artificial" },
   { src: ic2, nome: "Conversas Inteligentes" },
   { src: ic3, nome: "Qualificação de Leads" },
   { src: ic4, nome: "Crescimento Contínuo" },
@@ -97,11 +95,11 @@ export default function LandingPage() {
             Tudo que um vendedor humano faz — com a consistência de uma máquina.
           </p>
         </div>
-        <ul className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        <ul className="mx-auto mt-8 flex max-w-4xl flex-wrap justify-center gap-4">
           {RECURSOS.map((r) => (
             <li
               key={r.nome}
-              className="group flex flex-col items-center justify-center rounded-2xl border border-border bg-card p-5 text-center shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
+              className="group flex w-[calc(50%-0.5rem)] flex-col items-center justify-center rounded-2xl border border-border bg-card p-5 text-center shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md sm:w-44 lg:w-52"
             >
               <Image
                 src={r.src}
