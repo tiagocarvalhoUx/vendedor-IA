@@ -2,25 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Sparkles } from "lucide-react";
 import logoIA from "@/components/logo/logo-IA.png";
-import ic2 from "@/components/icons/icon-IA-2.png";
-import ic3 from "@/components/icons/icon-IA-3.png";
-import ic4 from "@/components/icons/icon-IA-4.png";
-import ic5 from "@/components/icons/icon-IA-5.png";
-import ic6 from "@/components/icons/icon-IA-6.png";
-import ic7 from "@/components/icons/icon-IA-7.png";
-import ic8 from "@/components/icons/icon-IA-8.png";
 
 // Landing pública (home). Ponto de entrada com marca; CTA leva ao painel.
-const RECURSOS = [
-  { src: ic2, nome: "Conversas Inteligentes" },
-  { src: ic3, nome: "Qualificação de Leads" },
-  { src: ic4, nome: "Crescimento Contínuo" },
-  { src: ic5, nome: "Velocidade" },
-  { src: ic6, nome: "Precisão" },
-  { src: ic7, nome: "Confiança" },
-  { src: ic8, nome: "Automação 24/7" },
-] as const;
-
 export default function LandingPage() {
   return (
     <div className="min-h-[100dvh] bg-background">
@@ -44,7 +27,7 @@ export default function LandingPage() {
           aria-hidden
           className="pointer-events-none absolute left-1/2 top-0 h-[420px] w-[720px] max-w-full -translate-x-1/2 rounded-full bg-gradient-to-br from-primary/20 via-accent/10 to-transparent blur-3xl"
         />
-        <div className="relative mx-auto max-w-3xl px-4 pb-16 pt-14 text-center sm:px-6 sm:pt-20">
+        <div className="relative mx-auto max-w-3xl px-4 pb-20 pt-14 text-center sm:px-6 sm:pt-24">
           <Image
             src={logoIA}
             alt="VIA — AI Sales Automation"
@@ -83,34 +66,6 @@ export default function LandingPage() {
             </Link>
           </div>
         </div>
-      </section>
-
-      {/* Recursos */}
-      <section className="mx-auto max-w-6xl px-4 pb-20 sm:px-6" aria-labelledby="recursos-titulo">
-        <div className="text-center">
-          <h2 id="recursos-titulo" className="text-2xl font-bold tracking-tight">
-            Por que VIA
-          </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Tudo que um vendedor humano faz — com a consistência de uma máquina.
-          </p>
-        </div>
-        <ul className="mx-auto mt-8 flex max-w-4xl flex-wrap justify-center gap-4">
-          {RECURSOS.map((r) => (
-            <li
-              key={r.nome}
-              className="group flex w-[calc(50%-0.5rem)] flex-col items-center justify-center rounded-2xl border border-border bg-card p-5 text-center shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md sm:w-44 lg:w-52"
-            >
-              <Image
-                src={r.src}
-                alt={r.nome}
-                width={112}
-                height={112}
-                className="h-24 w-24 object-contain transition-transform group-hover:scale-105"
-              />
-            </li>
-          ))}
-        </ul>
       </section>
 
       {/* Rodapé */}
