@@ -12,7 +12,9 @@ import {
   ChevronDown,
   ArrowRight,
   Boxes,
+  LogOut,
 } from "lucide-react";
+import { sair } from "@/app/login/actions";
 import { NAV, type ItemNav } from "@/components/layout/nav";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { NotificacoesBell } from "@/components/notificacoes/notificacoes-bell";
@@ -101,7 +103,16 @@ function RodapeOperador() {
         <p className="truncate text-sm font-medium">Operador</p>
         <p className="truncate text-xs text-muted-foreground">fiscal de robôs</p>
       </div>
-      <ChevronDown className="h-4 w-4 text-muted-foreground" aria-hidden />
+      <form action={sair}>
+        <button
+          type="submit"
+          title="Sair"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+        >
+          <LogOut className="h-4 w-4" aria-hidden />
+          <span className="sr-only">Sair</span>
+        </button>
+      </form>
     </div>
   );
 }
