@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { entrar } from "./actions";
+import { EntrarComDigital } from "@/components/auth/entrar-digital";
 import logoIA from "@/components/logo/logo-IA.png";
 
 export const metadata = { title: "Entrar · VIA" };
@@ -63,6 +64,14 @@ export default function LoginPage({
           >
             Entrar
           </button>
+
+          <div className="flex items-center gap-3 py-1">
+            <span className="h-px flex-1 bg-border" />
+            <span className="text-xs text-muted-foreground">ou</span>
+            <span className="h-px flex-1 bg-border" />
+          </div>
+
+          <EntrarComDigital next={searchParams.next ?? "/overview"} />
         </form>
       </div>
     </div>

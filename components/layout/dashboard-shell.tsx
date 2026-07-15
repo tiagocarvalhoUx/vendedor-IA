@@ -15,6 +15,7 @@ import {
   LogOut,
 } from "lucide-react";
 import { sair } from "@/app/login/actions";
+import { RegistrarDigital } from "@/components/auth/registrar-digital";
 import { NAV, type ItemNav } from "@/components/layout/nav";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { NotificacoesBell } from "@/components/notificacoes/notificacoes-bell";
@@ -103,6 +104,7 @@ function RodapeOperador() {
         <p className="truncate text-sm font-medium">Operador</p>
         <p className="truncate text-xs text-muted-foreground">fiscal de robôs</p>
       </div>
+      <RegistrarDigital />
       <form action={sair}>
         <button
           type="submit"
