@@ -214,3 +214,79 @@ export async function consultarRag(
 
   return { resultado, trechos, escalonamentoId };
 }
+
+// ─────────────────── Resposta de texto (WhatsApp / chat) ───────────────────
+
+/** Resposta gerada para uma pergunta de texto. */
+export type RespostaTexto =
+  | { readonly tipo: "resposta"; readonly texto: string }
+  | { readonly tipo: "escalar"; readonly motivo: string };
+
+/**
+ * Gera uma resposta ANTI-ALUCINAÇÃO para uma pergunta de texto, usando o
+ * manual (base_conhecimento) como contexto. "RAG-lite": para uma base pequena,
+ * injeta os trechos no prompt (sem embeddings) e instrui o LLM a responder
+ * SOMENTE com base neles — se não houver base, devolve "escalar".
+ *
+ * SERVER-ONLY. Sem OPENAI_API_KEY, sempre escala (fallback seguro).
+ */
+export async function responderPergunta(pergunta: string): Promise<RespostaTexto> {
+  const { serverEnv } = await import("@/lib/env");
+  if (serverEnv.OPENAI_API_KEY === undefined) {
+    return { tipo: "escalar", motivo: "IA de texto não configurada (sem OPENAI_API_KEY)." };
+  }
+
+  const { criarClienteServico } = await import("@/lib/supabase");
+  const supabase = criarClienteServico();
+  const { data } = await supabase
+    .from("base_conhecimento")
+    .select("praga, produto, dosagem, modo_uso, conteudo, fonte")
+    .limit(50);
+
+  type Item = {
+    praga: string | null;
+    produto: string | null;
+    dosagem: string | null;
+    modo_uso: string | null;
+    conteudo: string;
+    fonte: string;
+  };
+  const contexto = ((data ?? []) as Item[])
+    .map(
+      (b, i) =>
+        `[${i + 1}] Fonte: ${b.fonte}\n` +
+        `${[b.praga, b.produto, b.dosagem, b.modo_uso].filter(Boolean).join(" · ")}\n` +
+        b.conteudo,
+    )
+    .join("\n\n");
+
+  if (contexto.trim() === "") {
+    return { tipo: "escalar", motivo: "Base de conhecimento vazia." };
+  }
+
+  const OpenAI = (await import("openai")).default;
+  const client = new OpenAI({ apiKey: serverEnv.OPENAI_API_KEY });
+  const completion = await client.chat.completions.create({
+    model: "gpt-4o-mini",
+    temperature: 0.2,
+    messages: [
+      {
+        role: "system",
+        content:
+          "Você é o VIA, vendedor virtual da Unno Ambiental (químicos para controle de pragas). " +
+          "Responda à pergunta do cliente USANDO SOMENTE o CONTEXTO abaixo (manual da Unno). " +
+          "Produto químico não admite chute: se a resposta NÃO estiver claramente no contexto, " +
+          'responda EXATAMENTE a palavra "ESCALAR" e nada mais. NUNCA invente dosagem, praga ou ' +
+          "recomendação. Seja breve, cordial e em português do Brasil.\n\nCONTEXTO:\n" +
+          contexto,
+      },
+      { role: "user", content: pergunta },
+    ],
+  });
+
+  const texto = completion.choices[0]?.message?.content?.trim() ?? "";
+  if (texto === "" || texto.toUpperCase().replace(/[^A-Z]/g, "") === "ESCALAR") {
+    return { tipo: "escalar", motivo: "Pergunta fora do manual." };
+  }
+  return { tipo: "resposta", texto };
+}
