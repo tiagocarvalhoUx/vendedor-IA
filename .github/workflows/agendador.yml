@@ -1,0 +1,20 @@
+# Agendador de toques do VIA — pinger externo (roda independente do plano Vercel).
+# A cada 30 min, das 9h às 18h (BRT = 12-21 UTC), de seg a sex, chama o cron.
+# Requer o secret CRON_SECRET nas configurações do repositório
+# (Settings → Secrets and variables → Actions → New repository secret).
+name: Agendador de toques (VIA)
+
+on:
+  schedule:
+    - cron: "*/30 12-21 * * 1-5"
+  workflow_dispatch: {}
+
+jobs:
+  toque:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Chamar /api/cron/toques
+        run: |
+          curl -sS -X POST "https://vendedor-ia-seo.vercel.app/api/cron/toques" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -w "\nHTTP %{http_code}\n"

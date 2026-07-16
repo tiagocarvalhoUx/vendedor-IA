@@ -39,6 +39,9 @@ const serverSchema = z.object({
   ELEVENLABS_WEBHOOK_SECRET: z.string().min(1).optional(),
   // Token de verificação do webhook do WhatsApp Cloud API (handshake GET).
   WHATSAPP_VERIFY_TOKEN: z.string().min(1).optional(),
+  // Agendador (cron): segredo que protege a rota + flag de envio automático.
+  CRON_SECRET: z.string().min(1).optional(),
+  AGENDADOR_AUTO: z.string().optional(), // "true" habilita o contato automático
   // Limiar de similaridade do RAG (0..1). Abaixo disso → "não sei" + escalonar.
   RAG_SCORE_THRESHOLD: z.coerce.number().min(0).max(1).default(0.78),
 });
@@ -72,6 +75,8 @@ export const serverEnv = serverSchema.parse({
   ELEVENLABS_AGENT_PHONE_ID: vazioParaUndefined(process.env.ELEVENLABS_AGENT_PHONE_ID),
   ELEVENLABS_WEBHOOK_SECRET: vazioParaUndefined(process.env.ELEVENLABS_WEBHOOK_SECRET),
   WHATSAPP_VERIFY_TOKEN: vazioParaUndefined(process.env.WHATSAPP_VERIFY_TOKEN),
+  CRON_SECRET: vazioParaUndefined(process.env.CRON_SECRET),
+  AGENDADOR_AUTO: vazioParaUndefined(process.env.AGENDADOR_AUTO),
   RAG_SCORE_THRESHOLD: vazioParaUndefined(process.env.RAG_SCORE_THRESHOLD),
 });
 
