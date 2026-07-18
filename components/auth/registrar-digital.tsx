@@ -32,9 +32,12 @@ export function RegistrarDigital() {
 
       setEstado("ok");
       setMsg("Digital registrada! Já pode entrar por biometria.");
+      alert("✅ Digital registrada neste dispositivo! Saia e use 'Entrar com digital'.");
     } catch (e) {
+      const texto = e instanceof Error ? e.message : "Não foi possível registrar a digital.";
       setEstado("erro");
-      setMsg(e instanceof Error ? e.message : "Não foi possível registrar a digital.");
+      setMsg(texto);
+      alert("Não foi possível registrar a digital: " + texto);
     }
   }
 
