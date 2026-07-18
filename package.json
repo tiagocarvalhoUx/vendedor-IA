@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check:db": "node --env-file=.env.local scripts/check-db.mjs"
+    "check:db": "node --env-file=.env.local scripts/check-db.mjs",
+    "set:operador": "node --env-file=.env.local scripts/set-operador.mjs"
   },
   "dependencies": {
     "@simplewebauthn/browser": "^13.3.0",

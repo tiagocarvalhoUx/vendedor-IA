@@ -23,8 +23,6 @@ import { Rodape } from "@/components/layout/rodape";
 import { cn } from "@/lib/utils";
 import logoVia from "@/components/logo/logo-IA.png";
 
-const OPERADOR = "Marcio";
-
 function saudacaoPorHora(h: number): string {
   if (h < 12) return "Bom dia";
   if (h < 18) return "Boa tarde";
@@ -94,14 +92,14 @@ function CardPromo() {
   );
 }
 
-function RodapeOperador() {
+function RodapeOperador({ operador }: { readonly operador: string }) {
   return (
     <div className="flex items-center gap-3 rounded-xl px-2 py-1.5">
       <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/15 text-xs font-semibold text-primary">
-        {OPERADOR.slice(0, 2).toUpperCase()}
+        {operador.slice(0, 2).toUpperCase()}
       </span>
       <div className="min-w-0 flex-1 leading-tight">
-        <p className="truncate text-sm font-medium">Operador</p>
+        <p className="truncate text-sm font-medium">{operador}</p>
         <p className="truncate text-xs text-muted-foreground">fiscal de robôs</p>
       </div>
       <RegistrarDigital />
@@ -123,9 +121,11 @@ function RodapeOperador() {
 function ConteudoSidebar({
   ehAtivo,
   onNavegar,
+  operador,
 }: {
   readonly ehAtivo: (href: string) => boolean;
   readonly onNavegar?: () => void;
+  readonly operador: string;
 }) {
   return (
     <>
@@ -140,7 +140,7 @@ function ConteudoSidebar({
       <div className="space-y-3 p-3">
         <CardPromo />
         <div className="border-t border-border pt-2">
-          <RodapeOperador />
+          <RodapeOperador operador={operador} />
         </div>
       </div>
     </>
@@ -154,8 +154,10 @@ function ConteudoSidebar({
  */
 export function DashboardShell({
   children,
+  operador,
 }: {
   readonly children: React.ReactNode;
+  readonly operador: string;
 }) {
   const pathname = usePathname();
   const [aberto, setAberto] = useState(false);
@@ -184,7 +186,7 @@ export function DashboardShell({
       {/* ─── Sidebar desktop (card flutuante) ─── */}
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-[264px] p-3 md:block">
         <div className="flex h-full flex-col rounded-2xl border border-border bg-card shadow-sm">
-          <ConteudoSidebar ehAtivo={ehAtivo} />
+          <ConteudoSidebar ehAtivo={ehAtivo} operador={operador} />
         </div>
       </aside>
 
@@ -204,7 +206,7 @@ export function DashboardShell({
             >
               <X className="h-5 w-5" strokeWidth={1.75} aria-hidden />
             </button>
-            <ConteudoSidebar ehAtivo={ehAtivo} onNavegar={() => setAberto(false)} />
+            <ConteudoSidebar ehAtivo={ehAtivo} onNavegar={() => setAberto(false)} operador={operador} />
           </div>
         </div>
       )}
@@ -223,7 +225,7 @@ export function DashboardShell({
           {/* Saudação */}
           <div className="min-w-0 flex-1">
             <h1 className="truncate text-lg font-bold tracking-tight sm:text-xl" suppressHydrationWarning>
-              {saudacao}, {OPERADOR}! <span aria-hidden>👋</span>
+              {saudacao}, {operador}! <span aria-hidden>👋</span>
             </h1>
             <p className="hidden truncate text-sm text-muted-foreground sm:block">
               Aqui está o desempenho da sua operação hoje.
@@ -255,7 +257,7 @@ export function DashboardShell({
 
           {/* Avatar */}
           <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-xs font-semibold text-white">
-            {OPERADOR.slice(0, 2).toUpperCase()}
+            {operador.slice(0, 2).toUpperCase()}
           </span>
         </header>
 
